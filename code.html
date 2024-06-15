@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Web Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        #chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #chat-history {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+        #user-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+        }
+        #chat-submit {
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-history"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="chat-submit">Send</button>
+    </div>
+
+    <script>
+        const chatHistory = document.getElementById('chat-history');
+        const userInput = document.getElementById('user-input');
+        const chatSubmit = document.getElementById('chat-submit');
+
+        function appendMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${sender}: ${message}`;
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        chatSubmit.addEventListener('click', () => {
+            const userMessage = userInput.value.trim();
+            if (userMessage !== '') {
+                appendMessage(userMessage, 'User');
+                userInput.value = '';
+
+                // Call your backend to interact with ChatGPT and get response
+                // For demo purpose, I'll just echo the user message
+                appendMessage('...', 'ChatGPT');
+                setTimeout(() => {
+                    appendMessage(userMessage.toUpperCase() + ' (echoed)', 'ChatGPT');
+                }, 1000);
+            }
+        });
+
+        // Optional: Pressing Enter key to submit
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                chatSubmit.click();
+            }
+        });
+    </script>
+</body>
+</html>
